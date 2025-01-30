@@ -12,20 +12,21 @@ void client();
 int main(){
   printf("Starting server!\n");
 
-  struct sockaddr addr = {
-    .sa_family_t = AF_INET,
-    /* .sin_addr.s_addr = INADDR_ANY, */
-    /* .sin_port = htons(8080) */
-    /* char sa_data[14]; */
+  struct sockaddr_in addr = {
+    .sin_family = AF_INET,
+    .sin_addr.s_addr = INADDR_ANY,
+    .sin_port = htons(8080)
   };
 
   char response[] = "Hello from C server!\n";
 
   int s = socket(AF_INET, SOCK_STREAM, 0);
-  bind(s, &addr, sizeof(addr));
-  listen = listen(s, 1);
+  bind(s, (struct sockaddr *)&addr, sizeof(addr));
+  int result = listen(s, 1);
 
-  client_fd = accept(s, &addr, 14, 0);
+  socklen_t addr_len = sizeof(addr);
+  int client_fd = accept(s, (struct sockaddr *)&addr, &addr_len);
+
   write(client_fd, response, strlen(response));
   /* close(client_fd); */
   /* close(s); */
