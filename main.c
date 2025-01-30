@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <errno.h>
 
 
 void server();
@@ -25,9 +26,12 @@ int main(){
     printf("Error while socketing\n");
   }
 
+  int opt = 1;
+  setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
   int binded = bind(s, (struct sockaddr *)&addr, sizeof(addr));
   if(binded < 0){
-    printf("Error while binding\n");
+    perror("Error while binding\n");
   }
 
   int result = listen(s, 1);
@@ -41,8 +45,8 @@ int main(){
     int client_fd = accept(s, (struct sockaddr *)&addr, &addr_len);
 
     write(client_fd, response, strlen(response));
-    /* close(client_fd); */
-    /* close(s); */
+    close(client_fd);
   }
+  close(s);
   return 0;
 }
