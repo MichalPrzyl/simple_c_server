@@ -1,1 +1,2 @@
-clang -o program main.c
+ENGINE=gcc
+$ENGINE -o program main.c -Wall 
