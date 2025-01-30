@@ -47,6 +47,12 @@ int main(){
 
     int client_fd = accept(s, (struct sockaddr *)&addr, &addr_len);
 
+    char buffer[1024];
+    ssize_t bytes_received = recv(client_fd, buffer, sizeof(buffer)-1, 0);
+    if (bytes_received > 0){
+      buffer[bytes_received] = '\0';
+      printf("Received:\n%s\n", buffer);
+    }
     write(client_fd, response, strlen(response));
     close(client_fd);
   }
