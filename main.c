@@ -23,7 +23,8 @@ int main(){
 
   int s = socket(AF_INET, SOCK_STREAM, 0);
   if(s < 0){
-    printf("Error while socketing\n");
+    perror("Error while socketing");
+    return 1;
   }
 
   int opt = 1;
@@ -31,12 +32,14 @@ int main(){
 
   int binded = bind(s, (struct sockaddr *)&addr, sizeof(addr));
   if(binded < 0){
-    perror("Error while binding\n");
+    perror("Error while binding");
+    return 1;
   }
 
   int result = listen(s, 1);
   if(result < 0){
-    printf("Error while listening\n");
+    perror("Error while listening\n");
+    return 1;
   }
 
   socklen_t addr_len = sizeof(addr);
